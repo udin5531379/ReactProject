@@ -1,20 +1,10 @@
-import './App.css';
 import React, { Component } from 'react';
-import UserInput from './UserInput';
-import UserOutput from './UserOutput';
-import styled from "styled-components";
-
-
-import Validation from './Validation/Validation'
-import Char from './Char/Char'
+import Persons  from '../components/Persons/Persons';
+import Cockpit from '../components/Cockpit/Cockpit';
 
 import { render } from '@testing-library/react';
 
-
 class App extends Component{
-
-
-
 
   //  //1. initial state load garyo 
   // state = ({
@@ -81,70 +71,41 @@ class App extends Component{
       this.setState({showPerson: !doesShow})
     }
 
-    deletePersonHandler = (personIndex) => {
+    deletePersonHandler = personIndex => {
       const person = this.state.person.slice()
       person.splice(personIndex, 1)//removes 1 element from array [0] lai click garyo bhaney index[0] matra del huncha 
       this.setState({person: person})
     }
-
-
-
-    nameChangeHandler = (event) => {
-      this.setState({
-        person: [
-          {name: event.target.value, age: 29},
-          {name: event.target.value, age: 30},
-          {name: event.target.value, age: 23}
-        ]
+    
+    nameChangeHandler = (event, id) => {
+      const personIndex = this.state.person.findIndex( p => {
+        return p.id === id;
       })
     }
 
   render() {
     let pr = null;
-
-    const StyledButton = styled.button`
-      background-color: ${this.state.showPerson ? 'red' : 'green'};
-      color: ${this.state.showPerson ? 'white' : 'yellow'};
-      padding: 10px;
-
-      &:hover {
-        background-color: lightGreen;
-        color: black;
-      } 
-    `;
-
-    // sdgkfljsdfjgisdjgoisjeorigjoiejrgoiwjergijw
-   
-   if (this.state.showPerson) {
+    
+    if (this.state.showPerson) {
       pr = (
         <div>
-             {this.state.person.map( (per, index) => { //Here per is each object in the this.state.person array, each per lai chaeh kasari maniplate garney bhaneyra map ley garcha
-               return <UserOutput 
-               name={per.name} 
-               age={per.age} 
-               click={() => this.deletePersonHandler(index)} 
-               change={(event) => this.nameChangeHandler(event, index)}
-               key={per.id} />//each object ko part ma name ra age huncha ani tyeslai extract gareyko 
-             })}
+          <Persons //yeta hamley jun jun pass garyo tyo saabai props ma gayera bascha in Persons.js file 
+            person = {this.state.person}
+            click = {this.deletePersonHandler}
+            change = {this.nameChangeHandler}
+          /> 
         </div>
       );
     }
-
-    let dynamicClass = [] //OUTPUT: join by space chahe kina bhanda each element chahe space ley chuttincha i.e ['red' 'green' 'yellow']
-
-    if (this.state.person.length <= 2) {
-      dynamicClass.push('red') //output: [red]
-    }
-
-    if (this.state.person.length <= 1) {
-      dynamicClass.push('bold') //output: [red bold] since length=2 ma already array ma 'red' push bhai sakcha.
-    }
-
+    
     return (
-      <div className="App">
-        <h1>Hi, I'm Udin Rajkarnikar</h1>
-        <p className={dynamicClass.join(' ')}>This is me speaking from Canada</p>          
-        <StyledButton alt= {this.state.showPerson} onClick={this.togglePerson}> Switch !</StyledButton>
+      <div>
+       <Cockpit 
+        title = {this.props.appTitle} //props pachi ko chahe previous JS file ko title 
+        showPerson = {this.state.showPerson}
+        person = {this.state.person}
+        togglePerson = {this.togglePerson} //props ko pachi ko name chahe blue color ko togglePerson 
+       />
         {pr}
       </div>
     );

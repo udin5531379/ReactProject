@@ -1,12 +1,8 @@
 .App {
   padding-top: 10px;
   text-align: center;
+  background-color: indigo;
 }
 
-.red {
-  color: red;
-}
 
-.bold {
-  font-weight: bold;
-}
+
